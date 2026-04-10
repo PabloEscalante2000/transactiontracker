@@ -18,6 +18,8 @@ return new class extends Migration
             $table->text("description")->nullable();
             $table->date("date");
             $table->foreignIdFor(User::class)->constrained()->onDelete('cascade');
+            $table->enum('type', ['income', 'expense']);
+            $table->enum("state", ["pending", "completed", "failed"])->default("pending");
             $table->timestamps();
         });
     }

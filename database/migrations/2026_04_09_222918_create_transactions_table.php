@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->float("amount", 10, 2);
+            $table->float("amount", 10);
             $table->text("description")->nullable();
             $table->date("date");
             $table->foreignIdFor(User::class)->constrained()->onDelete('cascade');

@@ -1,7 +1,7 @@
 <x-layout title="Register">
     <div class="max-w-md mx-auto bg-white p-8 rounded-lg shadow-md">
         <h2 class="text-2xl font-semibold text-gray-800 mb-6">Create an Account</h2>
-        <form method="POST" action="{{ route('register') }}" class="space-y-6">
+        <form method="POST" action="{{ route('register.store') }}" class="space-y-6">
             @csrf
 
             <div>

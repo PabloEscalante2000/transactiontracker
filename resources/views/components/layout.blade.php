@@ -24,6 +24,8 @@
 
                 {{-- Auth buttons --}}
                 <div class="flex items-center gap-3">
+                @guest
+                
                     <a href="/login"
                        class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-900 transition-colors">
                         <i class="fa-solid fa-right-to-bracket text-base"></i>
@@ -34,8 +36,19 @@
                         <i class="fa-solid fa-user-plus text-base"></i>
                         Registrarse
                     </a>
+                @endguest
+                @auth
+                <form method="POST" action="/logout" class="inline">
+                    @csrf
+                    @method("DELETE")
+                    <button type="submit"
+                       class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 transition-colors shadow-sm">
+                        <i class="fa-solid fa-user-plus text-base"></i>
+                        Log out
+                    </button>
+                </form>
+                @endauth
                 </div>
-
             </div>
         </div>
     </nav>

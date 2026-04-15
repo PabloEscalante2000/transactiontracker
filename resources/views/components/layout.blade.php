@@ -38,10 +38,10 @@
                     </a>
                 @endguest
                 @auth
-                    <a href="/expenses"
+                    <a href="/transactions"
                        class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-900 transition-colors">
                         <i class="fa-solid fa-money-bill-wave text-base"></i>
-                        Expenses
+                        Transactions
                     </a>
                     <a href="/categories"
                        class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-900 transition-colors">

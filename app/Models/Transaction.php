@@ -8,11 +8,11 @@ class Transaction extends Model
 {
     protected $guarded = [];
 
-    protected function user(){
+    public function user(){
         return $this->belongsTo(User::class);
     }
 
-    protected function categorydetails(){
-        return $this->hasMany(Category::class);
+    public function categories(){
+        return $this->belongsToMany(Category::class);
     }
 }

@@ -10,6 +10,6 @@ class Category extends Model
 
     protected function transactions()
     {
-        return $this->hasMany(Transaction::class);
+        return $this->belongsToMany(Transaction::class);
     }
 }

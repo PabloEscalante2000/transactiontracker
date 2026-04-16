@@ -36,7 +36,9 @@ class TransactionController extends Controller
      */
     public function store(TransactionRequest $request)
     {
-        $transaction = Auth::user()->transactions()->create($request->validated());
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+        $transaction = $user->transactions()->create($request->safe()->except("categories"));
         $transaction->categories()->attach($request->input('categories', []));
         return redirect()->route('transactions.index')->with('success', 'Transaction created successfully.');
     }
@@ -54,7 +56,10 @@ class TransactionController extends Controller
      */
     public function edit(Transaction $transaction)
     {
-        //
+        return view('transactions.edit', [
+            'transaction' => $transaction,
+            'categories' => Category::all()
+        ]);
     }
 
     /**
@@ -70,6 +75,11 @@ class TransactionController extends Controller
      */
     public function destroy(Transaction $transaction)
     {
-        //
+        $user = Auth::user();
+        if ($transaction->user_id !== $user->id) {
+            return redirect()->route('transactions.index')->with('error', 'No tienes permiso para eliminar esta transacción.');
+        }
+        $transaction->delete();
+        return redirect()->route('transactions.index')->with('success', 'Transacción eliminada exitosamente.');
     }
 }

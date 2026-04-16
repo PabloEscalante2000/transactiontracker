@@ -14,7 +14,7 @@
     </div>
 
     {{-- Table --}}
-    <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+    <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-x-scroll">
 
         <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
             <h2 class="font-semibold text-gray-800">Todas las transacciones</h2>
@@ -88,12 +88,12 @@
 
                         <td class="px-6 py-4">
                             <div class="flex items-center justify-end gap-2">
-                                <a href="#"
+                                <a href="/transactions/{{ $transaction->id }}/edit"
                                    class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-indigo-600 border border-indigo-200 rounded-lg hover:bg-indigo-50 transition-colors">
                                     <i class="fa-solid fa-pen-to-square"></i>
                                     Editar
                                 </a>
-                                <form action="#" method="POST">
+                                <form action="/transactions/{{ $transaction->id }}" method="POST" onsubmit="return confirm('¿Estás seguro que quieres borrar esta transacción?')">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit"

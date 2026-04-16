@@ -29,6 +29,8 @@ Route::middleware('auth')->group(function () {
     Route::get("/transactions",[TransactionController::class, 'index'])->name("transactions.index");
     Route::get("/transactions/create",[TransactionController::class, 'create'])->name("transactions.create");
     Route::post("/transactions/create",[TransactionController::class, 'store'])->name("transactions.store");
+    Route::get("/transactions/{transaction}/edit",[TransactionController::class, 'edit'])->name("transactions.edit");
+    Route::delete("/transactions/{transaction}",[TransactionController::class, 'destroy'])->name("transactions.destroy");
 }); 
 
 Route::middleware("guest")->group(function(){

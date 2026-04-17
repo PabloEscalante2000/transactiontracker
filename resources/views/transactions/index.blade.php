@@ -1,5 +1,4 @@
 <x-layout title="Transactions">
-
     {{-- Header --}}
     <div class="flex items-center justify-between mb-8">
         <div>
@@ -88,10 +87,13 @@
 
                         <td class="px-6 py-4">
                             <div class="flex items-center justify-end gap-2">
+                                <a href="/transactions/{{ $transaction->id }}"
+                                   class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-blue-600 border border-blue-200 rounded-lg hover:bg-blue-50 transition-colors">
+                                    <i class="fa-solid fa-eye"></i>
+                                </a>
                                 <a href="/transactions/{{ $transaction->id }}/edit"
                                    class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-indigo-600 border border-indigo-200 rounded-lg hover:bg-indigo-50 transition-colors">
                                     <i class="fa-solid fa-pen-to-square"></i>
-                                    Editar
                                 </a>
                                 <form action="/transactions/{{ $transaction->id }}" method="POST" onsubmit="return confirm('¿Estás seguro que quieres borrar esta transacción?')">
                                     @csrf
@@ -99,7 +101,6 @@
                                     <button type="submit"
                                             class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-red-500 border border-red-200 rounded-lg hover:bg-red-50 transition-colors">
                                         <i class="fa-solid fa-trash"></i>
-                                        Eliminar
                                     </button>
                                 </form>
                             </div>

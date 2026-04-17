@@ -60,7 +60,7 @@
             <div>
                 <label for="date" class="block text-sm font-semibold text-gray-700 mb-1.5">Fecha</label>
                 <input type="date" name="date" id="date"
-                       value="{{ old('date', date('Y-m-d')) }}"
+                       value="{{ old('date', $transaction->date) }}"
                        class="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent @error('date') border-red-400 @enderror">
                 @error('date')
                     <p class="mt-1.5 text-xs text-red-500">{{ $message }}</p>
@@ -76,8 +76,9 @@
                 <span class="font-normal text-gray-400">(opcional)</span>
             </label>
             <textarea name="description" id="description" rows="3"
+                      value="{{ old('description', $transaction->description) }}"
                       placeholder="Agrega una descripcion..."
-                      class="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none @error('description') border-red-400 @enderror">{{ old('description') }}</textarea>
+                      class="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none @error('description') border-red-400 @enderror">{{ old('description', $transaction->description) }}</textarea>
             @error('description')
                 <p class="mt-1.5 text-xs text-red-500">{{ $message }}</p>
             @enderror
@@ -90,9 +91,9 @@
                 <label for="state" class="block text-sm font-semibold text-gray-700 mb-1.5">Estado</label>
                 <select name="state" id="state"
                         class="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent @error('state') border-red-400 @enderror">
-                    <option value="pending"   {{ old('state', 'pending') === 'pending'   ? 'selected' : '' }}>Pendiente</option>
-                    <option value="completed" {{ old('state') === 'completed' ? 'selected' : '' }}>Completado</option>
-                    <option value="failed"    {{ old('state') === 'failed'    ? 'selected' : '' }}>Fallido</option>
+                    <option value="pending"   {{ old('state', $transaction->state) === 'pending'   ? 'selected' : '' }}>Pendiente</option>
+                    <option value="completed" {{ old('state', $transaction->state) === 'completed' ? 'selected' : '' }}>Completado</option>
+                    <option value="failed"    {{ old('state', $transaction->state) === 'failed'    ? 'selected' : '' }}>Fallido</option>
                 </select>
                 @error('state')
                     <p class="mt-1.5 text-xs text-red-500">{{ $message }}</p>
@@ -107,7 +108,7 @@
 
                 <div class="flex flex-wrap gap-2">
                     @foreach ($categories as $category)
-                        @php $checked = in_array($category->id, old('categories', [])); @endphp
+                        @php $checked = in_array($category->id, old('categories', $transaction->categories->pluck('id')->toArray())); @endphp
                         <label class="category-chip cursor-pointer select-none">
                             <input type="checkbox" name="categories[]" value="{{ $category->id }}"
                                    class="sr-only peer" {{ $checked ? 'checked' : '' }}>
@@ -139,7 +140,7 @@
             <button type="submit"
                     class="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 transition-colors shadow-sm">
                 <i class="fa-solid fa-floppy-disk"></i>
-                Guardar transaccion
+                Actualizar transaccion
             </button>
         </div>
 

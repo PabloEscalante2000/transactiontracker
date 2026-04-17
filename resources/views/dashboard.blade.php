@@ -15,7 +15,7 @@
             </div>
             <div>
                 <p class="text-sm text-gray-500">Balance</p>
-                <p class="text-2xl font-bold text-gray-900">$0.00</p>
+                <p class="text-2xl font-bold text-gray-900">${{ number_format($balance, 2) }}</p>
             </div>
         </div>
 
@@ -25,7 +25,7 @@
             </div>
             <div>
                 <p class="text-sm text-gray-500">Ingresos</p>
-                <p class="text-2xl font-bold text-emerald-600">$0.00</p>
+                <p class="text-2xl font-bold text-emerald-600">${{ number_format($income, 2) }}</p>
             </div>
         </div>
 
@@ -35,7 +35,7 @@
             </div>
             <div>
                 <p class="text-sm text-gray-500">Gastos</p>
-                <p class="text-2xl font-bold text-red-500">$0.00</p>
+                <p class="text-2xl font-bold text-red-500">${{ number_format($expense, 2) }}</p>
             </div>
         </div>
 
@@ -45,7 +45,7 @@
             </div>
             <div>
                 <p class="text-sm text-gray-500">Categorias</p>
-                <p class="text-2xl font-bold text-gray-900">0</p>
+                <p class="text-2xl font-bold text-gray-900">{{ $categories->count() }}</p>
             </div>
         </div>
 
@@ -61,53 +61,32 @@
                     <i class="fa-solid fa-clock-rotate-left text-indigo-500"></i>
                     Transacciones recientes
                 </h2>
-                <a href="#" class="text-sm text-indigo-600 hover:text-indigo-700 font-medium">Ver todas</a>
+                <a href="/transactions" class="text-sm text-indigo-600 hover:text-indigo-700 font-medium">Ver todas</a>
             </div>
 
             <div class="divide-y divide-gray-50">
-                {{-- Empty state --}}
-                <div class="flex flex-col items-center justify-center py-16 text-gray-400">
-                    <i class="fa-solid fa-inbox text-4xl mb-3"></i>
-                    <p class="text-sm">No hay transacciones registradas</p>
-                </div>
-
-                {{-- Ejemplo income (descomenta cuando tengas datos) --}}
-                {{--
-                <div class="flex items-center justify-between px-6 py-4 hover:bg-gray-50 transition-colors">
-                    <div class="flex items-center gap-3">
-                        <div class="bg-emerald-100 text-emerald-600 rounded-lg p-2">
-                            <i class="fa-solid fa-arrow-up text-sm"></i>
+                @forelse ($transactions as $transaction)
+                    <div class="flex items-center justify-between px-6 py-4">
+                        <div class="flex items-center gap-4">
+                            <div class="flex-shrink-0 bg-gray-100 text-gray-500 rounded-lg p-3">
+                                <i class="fa-solid fa-money-bill-transfer text-xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-900">{{ $transaction->description }}</p>
+                                <p class="text-sm text-gray-500">{{ $transaction->created_at->format('d M Y') }}</p>
+                            </div>
                         </div>
-                        <div>
-                            <p class="text-sm font-medium text-gray-800">Nombre transaccion</p>
-                            <p class="text-xs text-gray-400">Categoria</p>
-                        </div>
+                        <p class="text-sm font-semibold {{ $transaction->type === 'income' ? 'text-emerald-600' : 'text-red-500' }}">
+                            {{ $transaction->type === 'income' ? '+' : '-' }}${{ number_format($transaction->amount, 2) }}
+                        </p>
                     </div>
-                    <div class="text-right">
-                        <p class="text-sm font-semibold text-emerald-600">+$0.00</p>
-                        <p class="text-xs text-gray-400">01 Jan 2026</p>
+                @empty
+                    {{-- Empty state --}}
+                    <div class="flex flex-col items-center justify-center py-16 text-gray-400">
+                        <i class="fa-solid fa-inbox text-4xl mb-3"></i>
+                        <p class="text-sm">No hay transacciones registradas</p>
                     </div>
-                </div>
-                --}}
-
-                {{-- Ejemplo expense (descomenta cuando tengas datos) --}}
-                {{--
-                <div class="flex items-center justify-between px-6 py-4 hover:bg-gray-50 transition-colors">
-                    <div class="flex items-center gap-3">
-                        <div class="bg-red-100 text-red-500 rounded-lg p-2">
-                            <i class="fa-solid fa-arrow-down text-sm"></i>
-                        </div>
-                        <div>
-                            <p class="text-sm font-medium text-gray-800">Nombre transaccion</p>
-                            <p class="text-xs text-gray-400">Categoria</p>
-                        </div>
-                    </div>
-                    <div class="text-right">
-                        <p class="text-sm font-semibold text-red-500">-$0.00</p>
-                        <p class="text-xs text-gray-400">01 Jan 2026</p>
-                    </div>
-                </div>
-                --}}
+                @endforelse
             </div>
         </div>
 
@@ -118,26 +97,24 @@
                     <i class="fa-solid fa-layer-group text-violet-500"></i>
                     Categorias
                 </h2>
-                <a href="#" class="text-sm text-indigo-600 hover:text-indigo-700 font-medium">Gestionar</a>
+                <a href="/categories" class="text-sm text-indigo-600 hover:text-indigo-700 font-medium">Gestionar</a>
             </div>
 
-            <div class="p-6 space-y-4">
-                {{-- Empty state --}}
-                <div class="flex flex-col items-center justify-center py-10 text-gray-400">
-                    <i class="fa-solid fa-folder-open text-4xl mb-3"></i>
-                    <p class="text-sm">No hay categorias</p>
-                </div>
+            <div class="p-6 space-y-4 flex flex-row gap-4 flex-wrap ">
 
-                {{-- Ejemplo de categoria (descomenta cuando tengas datos) --}}
-                {{--
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-2">
-                        <span class="w-2.5 h-2.5 rounded-full bg-indigo-500"></span>
-                        <span class="text-sm text-gray-700">Nombre categoria</span>
+                @forelse ($categories as $category)
+                    <div class="flex-inline items-center justify-between">
+                        <div class="bg-gray-100 text-gray-500 rounded-full px-3 py-1 cursor-pointer hover:bg-purple-200">
+                            <span class="text-sm text-gray-700">{{ $category->name }}</span>
+                        </div>
                     </div>
-                    <span class="text-sm font-semibold text-gray-800">$0.00</span>
-                </div>
-                --}}
+                @empty
+                    {{-- Empty state --}}
+                    <div class="flex flex-col items-center justify-center py-10 text-gray-400">
+                        <i class="fa-solid fa-folder-open text-4xl mb-3"></i>
+                        <p class="text-sm">No hay categorias</p>
+                    </div>
+                @endforelse
             </div>
         </div>
 

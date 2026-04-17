@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use App\Http\Requests\transaction\TransactionRequest;
 use App\Models\Category;
 use App\Models\Transaction;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class TransactionController extends Controller
 {
+    use AuthorizesRequests;
     /**
      * Display a listing of the resource.
      */
@@ -48,7 +50,11 @@ class TransactionController extends Controller
      */
     public function show(Transaction $transaction)
     {
-        //
+        $this->authorize('view', $transaction);
+        return view('transactions.show', [
+            'transaction' => $transaction,
+            'categories' => $transaction->categories()->get()
+        ]);
     }
 
     /**
@@ -56,6 +62,7 @@ class TransactionController extends Controller
      */
     public function edit(Transaction $transaction)
     {
+        $this->authorize('update', $transaction);
         return view('transactions.edit', [
             'transaction' => $transaction,
             'categories' => Category::all()
@@ -65,9 +72,12 @@ class TransactionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Transaction $transaction)
+    public function update(TransactionRequest $request, Transaction $transaction)
     {
-        //
+        $this->authorize('update', $transaction);
+        $transaction->update($request->safe()->except("categories"));
+        $transaction->categories()->sync($request->input('categories', []));
+        return redirect()->route('transactions.index')->with('success', 'Transacción actualizada exitosamente.');
     }
 
     /**
@@ -75,10 +85,7 @@ class TransactionController extends Controller
      */
     public function destroy(Transaction $transaction)
     {
-        $user = Auth::user();
-        if ($transaction->user_id !== $user->id) {
-            return redirect()->route('transactions.index')->with('error', 'No tienes permiso para eliminar esta transacción.');
-        }
+        $this->authorize('delete', $transaction);
         $transaction->delete();
         return redirect()->route('transactions.index')->with('success', 'Transacción eliminada exitosamente.');
     }

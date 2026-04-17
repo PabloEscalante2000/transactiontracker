@@ -4,17 +4,16 @@ use App\Http\Controllers\auth\LoginController;
 use App\Http\Controllers\auth\LogOutController;
 use App\Http\Controllers\auth\RegisterController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TransactionController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect("/dashboard");
 });
 
 Route::middleware('auth')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::delete("/logout",[LogOutController::class, "destroy"])->name("logout");
     Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
 
@@ -31,6 +30,8 @@ Route::middleware('auth')->group(function () {
     Route::post("/transactions/create",[TransactionController::class, 'store'])->name("transactions.store");
     Route::get("/transactions/{transaction}/edit",[TransactionController::class, 'edit'])->name("transactions.edit");
     Route::delete("/transactions/{transaction}",[TransactionController::class, 'destroy'])->name("transactions.destroy");
+    Route::patch("/transactions/{transaction}",[TransactionController::class, 'update'])->name("transactions.update");
+    Route::get("/transactions/{transaction}",[TransactionController::class, 'show'])->name("transactions.show");
 }); 
 
 Route::middleware("guest")->group(function(){
